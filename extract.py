@@ -2,6 +2,9 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+def extract_categories_url_from_homepage(url):
+    return list_of_categories_urls
+
 def extract_information_of_a_product_page(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
