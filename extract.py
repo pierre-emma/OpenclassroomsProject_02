@@ -9,30 +9,31 @@ def extract_urls_of_categories(url):
     soup = BeautifulSoup(page.content, 'html.parser')
     list_of_urls_of_categories = []
     list_of_names_of_categories = []
+    list_dic_categories = []
     ul_of_categories = soup.find('ul', class_='nav-list').findChild('li').findChild('ul')
     lis_of_categories = ul_of_categories.find_all('li')
     print("Extraction des urls des catégories...")
+
     for li in lis_of_categories:
         url_of_category = str(li.find('a').get('href'))
         name_of_category = (li.text).strip()
-
-        ''' TO ADD IN TRANSFORM
         url_of_category = url_of_category.replace('..', '', 1)
         url_of_category_absolute = "https://books.toscrape.com/" + url_of_category
-        list_of_urls_of_categories.append(url_of_category_absolute) '''
-        list_of_urls_of_categories.append(url_of_category)
-        list_of_names_of_categories.append(name_of_category)
+
+        current_category_dic = {"name": name_of_category, "url": url_of_category_absolute}
+        list_dic_categories.append(current_category_dic)
         print(name_of_category)
         # création d'un dictionnaire
     print(f"{len(list_of_urls_of_categories)} urls ont été extraites")
+    print(f"Voici la liste de dictionnaires {list_dic_categories}")
 
 
-    return list_of_urls_of_categories, list_of_names_of_categories
+    return list_dic_categories
 
 
 
     # Recherche de plusieurs pages categories
-def get_urls_of_a_category():
+def get_urls_of_a_category(category_urls):
     for url in urls:
         i = 1
         base_url = category_urls.replace('index.html', '')
@@ -49,7 +50,7 @@ def get_urls_of_a_category():
         print(len(urls_of_a_category))
         return urls_of_a_category
 
-    return  list_of_urls_of_categories 
+    return  list_of_urls_of_categories
 
 
 # Fonction qui extrait les urls des produits d'une page catégorie

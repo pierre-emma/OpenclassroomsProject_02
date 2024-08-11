@@ -3,14 +3,18 @@ import transform
 
 def main():
     homepage = "https://books.toscrape.com"
-    # Extraction des urls catégories depuis la homepage
-    list_of_urls_of_categories = extract.extract_urls_of_categories(homepage)
-    print(list_of_urls_of_categories)
+    # Extraction des urls de base et des noms de chaque catégorie depuis la homepage
+    categories_info = extract.extract_urls_of_categories(homepage)
+    print("yo")
+
+
+
+
 
     # Extraction de toutes les pages de chaque catégorie s'il y en a plusieurs
     #for category in list_of_urls_of_categories:
 
-    for url in list_of_urls_of_categories:
+
 
 
 

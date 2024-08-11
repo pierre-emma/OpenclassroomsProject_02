@@ -6,6 +6,8 @@ def transform_information_of_a_product_page(product_information):
     for x in keys_of_product_information_dictionary:
         transformed_product_information[keys_of_product_information_dictionary[i]]=product_information[i]
         i += 1
-    raw_
+
     return  transformed_product_information
+
+
 
