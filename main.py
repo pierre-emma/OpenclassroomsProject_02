@@ -4,9 +4,12 @@ import transform
 def main():
     homepage = "https://books.toscrape.com"
     # Extraction des urls de base et des noms de chaque catégorie depuis la homepage
-    categories_info = extract.extract_urls_of_categories(homepage)
-    print("yo")
 
+
+    book_info = extract.get_book_detail("https://books.toscrape.com/catalogue/the-dovekeepers_748/index.html")
+    print(book_info)
+    books_urls = extract.get_books_from_category('https://books.toscrape.com/catalogue/category/books/travel_2/index.html')
+    print(books_urls)
 
 
 

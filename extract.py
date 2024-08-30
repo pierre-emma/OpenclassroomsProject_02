@@ -2,13 +2,11 @@ import csv
 import requests
 from bs4 import BeautifulSoup
 
+homepage = 'https://books.toscrape.com/'
+
 
 # Fonction qui extrait les urls principales des categories du site
-def extract_urls_of_categories(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    list_of_urls_of_categories = []
-    list_of_names_of_categories = []
+def get_categories(url):
     list_dic_categories = []
     ul_of_categories = soup.find('ul', class_='nav-list').findChild('li').findChild('ul')
     lis_of_categories = ul_of_categories.find_all('li')
@@ -20,37 +18,35 @@ def extract_urls_of_categories(url):
         url_of_category = url_of_category.replace('..', '', 1)
         url_of_category_absolute = "https://books.toscrape.com/" + url_of_category
 
-        current_category_dic = {"name": name_of_category, "url": url_of_category_absolute}
+        current_category_dic = {"name": name_of_category, "url": [url_of_category_absolute]}
         list_dic_categories.append(current_category_dic)
         print(name_of_category)
         # création d'un dictionnaire
-    print(f"{len(list_of_urls_of_categories)} urls ont été extraites")
-    print(f"Voici la liste de dictionnaires {list_dic_categories}")
-
-
+    print(f"{len(list_dic_categories)} urls ont été extraites")
+    #print(f"Voici la liste de dictionnaires {list_dic_categories}")
     return list_dic_categories
 
 
 
-    # Recherche de plusieurs pages categories
-def get_urls_of_a_category(category_urls):
-    for url in urls:
-        i = 1
-        base_url = category_urls.replace('index.html', '')
-        current_url = (base_url + "page-" + str(i) + ".html")
-        urls_of_a_category = []
-        all_urls_of_pages = []
-        print(base_url)
+# Récupération des livres d'une page catégorie
+def get_books_from_category(url):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    books = soup.findAll('h3')
+    books_urls = []
+    for h3 in books:
+        url_of_product = str(h3.find('a').get('href'))
+        url_of_product_absolute = url_of_product.replace('../../../', 'https://books.toscrape.com/catalogue/', 1)
+        books_urls.append(url_of_product_absolute)
 
-        while requests.get(current_url).status_code == 200:
-            urls_of_a_category.append(current_url)
-            all_urls_of_pages = all_urls_of_pages + urls_of_a_category
-            i = i + 1
-            current_url = (base_url + "page-" + str(i) + ".html")
-        print(len(urls_of_a_category))
-        return urls_of_a_category
 
-    return  list_of_urls_of_categories
+
+
+    return books_urls
+
+
+
+
 
 
 # Fonction qui extrait les urls des produits d'une page catégorie
@@ -73,29 +69,17 @@ def extract_products_urls_from_category_urls(url):
     print("Nombre de produits dans la page : ", len(urls_of_products_of_a_category))
 
     return urls_of_products_of_a_category
-    '''
+
 
 # Fonction qui extrait les informations d'une page produit
-def extract_information_of_a_product_page(url):
+def get_book_detail(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-
-    product_information = []
-    # récupération des informations produits
-    product_url = url
-    product_info_upc = soup.find('th', string='UPC').find_next_sibling('td').string
-    product_title = soup.find("h1").string
-    price_including_tax = soup.find('th', string='Price (incl. tax)').find_next_sibling('td').string
-    price_excluding_tax = soup.find('th', string='Price (excl. tax)').find_next_sibling('td').string
-    number_available = soup.find('th', string='Availability').find_next_sibling('td').string
-    product_description = soup.find('div', id='product_description').find_next_sibling('p').string
-    category = soup.find('ul', class_='breadcrumb').findChild('li').find_next_sibling('li').find_next_sibling(
-        'li').findChild('a').string
-
     # récupération de la note
     div_product_info = soup.find('div', class_='col-sm-6 product_main')
     paragraphs_product_info = div_product_info.find_all('p')
 
+    # essayer de faire un mapping avec dic
     for p in paragraphs_product_info:
         classes = p.get('class')
         if 'One' in classes:
@@ -111,21 +95,29 @@ def extract_information_of_a_product_page(url):
         else:
             continue
 
-    # Récupération de l'url de l'image
-    divs_item_active = soup.find('div', class_='carousel-inner')
-    img_url = divs_item_active.find('img').get('src')
-    while img_url.startswith('../'):
-        img_url = img_url.replace('../', '', 1)
-        img_url_absolute = "https://books.toscrape.com/" + img_url
+    book_detail = {
+        'product_page_url': url,
+        'universal_ product_code (upc)': soup.find('th', string='UPC').find_next_sibling('td').string,
+        'title': soup.find("h1").string,
+        'price_including_tax': soup.find('th', string='Price (incl. tax)').find_next_sibling('td').string,
+        'price_excluding_tax': soup.find('th', string='Price (excl. tax)').find_next_sibling('td').string,
+        'number_available': soup.find('th', string='Availability').find_next_sibling('td').string,
+        'product_description': soup.find('div', id='product_description').find_next_sibling('p').string,
+        'category': soup.find('ul', class_='breadcrumb').findChild('li').find_next_sibling('li').find_next_sibling(
+            'li').findChild('a').string,
+        'review_rating': rating,
+        'image_url' : soup.find('div', class_='item active').findChild('img')["src"].replace('../', homepage, 1)
+    }
+    return book_detail
 
-    product_information =[product_url,product_info_upc,product_title,price_including_tax,price_excluding_tax,number_available,product_description,category,rating,img_url_absolute]
-    return product_information
 
 
 
 
 
-'''
+
+
+
 
 
 
