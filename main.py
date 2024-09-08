@@ -1,15 +1,51 @@
 import extract
+import load
 import transform
+
+#import transform
 
 def main():
     homepage = "https://books.toscrape.com"
     # Extraction des urls de base et des noms de chaque catégorie depuis la homepage
+    #categories = extract.get_categories(homepage)
+
+    #for category in categories:
 
 
-    book_info = extract.get_book_detail("https://books.toscrape.com/catalogue/the-dovekeepers_748/index.html")
-    print(book_info)
-    books_urls = extract.get_books_from_category('https://books.toscrape.com/catalogue/category/books/travel_2/index.html')
-    print(books_urls)
+
+    url = 'https://books.toscrape.com/catalogue/category/books/childrens_11/index.html'
+    file_name = load.get_file_name(url)
+    # Create the .csv file
+    load.create_category_file(file_name, url)
+    # Loop for scraping books detail pages from a category
+    while True:
+        # Scraping des urls des livres d'une category
+        books = extract.get_books_from_category(url)
+
+        # Extraction des informations des livres de la catégorie
+        for book in books:
+            book_detail = extract.get_book_detail(book)
+            print(book_detail)
+            book_detail = transform.transform_book_detail(book_detail)
+            print(book_detail)
+            load.load_book_detail(file_name, book_detail)
+
+            #print(book_detail)
+        #print(books)
+        next_page = extract.get_next_page(url)
+        url = next_page
+        if not url:
+            break
+        else:
+            continue
+
+
+
+
+
+
+
+
 
 
 
