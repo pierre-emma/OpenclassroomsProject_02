@@ -1,11 +1,24 @@
 
-def transform_information_of_a_product_page(product_information):
-    transformed_product_information = {}
-    keys_of_product_information_dictionary = ['product_url','product_info_upc','product_title','price_including_tax','price_excluding_tax','number_available','product_description','category','review_rating','img_url']
-    i = 0
-    for x in keys_of_product_information_dictionary:
-        transformed_product_information[keys_of_product_information_dictionary[i]]=product_information[i]
-        i += 1
-    raw_
-    return  transformed_product_information
+
+def transform_book_detail(book_detail):
+    rating = book_detail['review_rating']['class'][1]
+    print(rating)
+    if 'One' in rating:
+        book_detail['review_rating'] = '1'
+    elif 'Two' in rating:
+        book_detail['review_rating'] = '2'
+    elif 'Three' in rating:
+        book_detail['review_rating'] = '3'
+    elif 'Four' in rating:
+        book_detail['review_rating'] = '4'
+    elif 'Five' in rating:
+        book_detail['review_rating'] = '5'
+
+    return book_detail
+
+
+
+
+
+
 
