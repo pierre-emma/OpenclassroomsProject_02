@@ -2,7 +2,6 @@
 
 def transform_book_detail(book_detail):
     rating = book_detail['review_rating']['class'][1]
-    print(rating)
     if 'One' in rating:
         book_detail['review_rating'] = '1'
     elif 'Two' in rating:

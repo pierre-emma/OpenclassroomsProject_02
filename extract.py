@@ -1,32 +1,29 @@
 import csv
 import requests
 from bs4 import BeautifulSoup
-# TO DO set everything in en, set the transform functions,
-homepage = 'https://books.toscrape.com/'
 
+homepage = "https://books.toscrape.com"
 
 # Fonction qui extrait les urls principales des categories du site
-def get_categories(url):
-    page = requests.get(url)
+def get_categories(homepage):
+    page = requests.get(homepage)
     soup = BeautifulSoup(page.content, 'html.parser')
-    list_dic_categories = []
-    ul_of_categories = soup.find('ul', class_='nav-list').findChild('li').findChild('ul')
-    lis_of_categories = ul_of_categories.find_all('li')
+    categories = soup.find('ul', class_='nav-list').findChild('li').findChild('ul').find_all('li')
+    categories_urls = [li.find('a')['href'] for li in categories]
+    categories_name = [li.find('a').get_text() for li in categories]
+    categories_name = [name.strip() for name in categories_name]
+    categories_dict =[{'name': name, 'url': url} for name, url in zip(categories_name, categories_urls)]
+
     print("Extraction des urls des catégories...")
+    print(categories_dict)
+    for category in categories_dict:
 
-    for li in lis_of_categories:
-        url_of_category = str(li.find('a').get('href'))
-        name_of_category = (li.text).strip()
-        url_of_category = url_of_category.replace('..', '', 1)
-        url_of_category_absolute = "https://books.toscrape.com/" + url_of_category
+        category['url'] = str(homepage) + '/' + category['url']
+        print(category)
 
-        current_category_dic = {"name": name_of_category, "url": [url_of_category_absolute]}
-        list_dic_categories.append(current_category_dic)
-        print(name_of_category)
-        # création d'un dictionnaire
-    print(f"{len(list_dic_categories)} urls ont été extraites")
-    #print(f"Voici la liste de dictionnaires {list_dic_categories}")
-    return categories
+
+    print(f"{len(categories_dict)} urls ont été extraites")
+    return categories_dict
 
 
 
@@ -38,6 +35,7 @@ def get_books_from_category(url):
     books_urls = []
     for h3 in books:
         url_of_product = str(h3.find('a').get('href'))
+        print(url_of_product)
         url_of_product_absolute = url_of_product.replace('../../../', 'https://books.toscrape.com/catalogue/', 1)
         books_urls.append(url_of_product_absolute)
     return books_urls

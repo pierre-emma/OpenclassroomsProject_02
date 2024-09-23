@@ -13,11 +13,7 @@ now = datetime.now()
 date_of_now = now.strftime("%d_%m_%Y")
 time_of_now = now.strftime("%H_%M_%S")
 
-def get_file_name(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    file_name = soup.find('h1').string + '_'+ date_of_now + '.csv'
-    return file_name
+
 
 
 def create_category_file(file_name, url):
