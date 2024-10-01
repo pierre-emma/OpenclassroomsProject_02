@@ -14,6 +14,7 @@ def main():
     # Extract categories with a dictionary containing keys: 'name' and 'url'
     categories = extract.get_categories(homepage)
     # Loop to extract all books from a category
+
     for category in categories:
         # Loop for scraping books detail urls from a category
         url = category['url']
@@ -21,6 +22,7 @@ def main():
         load.create_books_detail_file(category['name']+'_'+ date_of_now)
 
         while True:
+
             # Scraping books url from category pages
             print('Scraping of: ' +(url))
             books = extract.get_books_from_category(url)

@@ -1,60 +1,61 @@
 
-# Programme de Scraping ETL (Version Bêta)
+# ETL Scraping Program (Beta Version)
 
 ## Description
-Ce projet est un programme de scraping conçu pour extraire, transformer et charger des données à partir du site [Books to Scrape](https://books.toscrape.com). Il est développé dans le cadre de la création d'un système de surveillance des prix des sites concurrents.
+This project is a scraping program designed to extract, transform, and load data from the website [Books to Scrape](https://books.toscrape.com). It was developed as part of a price monitoring system for competitor websites.
 
-### Version Bêta
-> **Attention :** Ce programme est en version bêta et ne fonctionne qu'avec le site `Books to Scrape`.
+### Beta Version
+> **Note:** This program is in beta version and only works with the `Books to Scrape` website.
 
-## Objectif du Projet
-Le programme récupère les informations des livres du site, telles que :
+## Project Objective
+The program retrieves book information from the site, such as:
 
-- **Titre**
-- **Prix**
-- **Disponibilité**
-- **Catégorie**
+- **Title**
+- **Price**
+- **Availability**
+- **Category**
 - **Description**
 - **Image**
-- **Classement (nombre d'étoiles)**
+- **Rating (number of stars)**
 - **UPC**
-- **Prix HT**
-- **Prix TTC**
+- **Ex-VAT Price**
+- **Price (Incl. VAT)**
 
 ## Installation
-1. **Cloner le dépôt :**
+1. **Clone the repository:**
    ```bash
    git clone git@github.com:pierre-emma/OpenclassroomsProject_02.git
+   or from https://github.com/pierre-emma/OpenclassroomsProject_02
    cd OpenclassroomsProject_02
    ```
 
-2. **Créer et activer un environnement virtuel :**
+2. **Create and activate a virtual environment:**
    ```bash
    python -m venv env
-   # Sur Windows
-   .\env\Scripts\activate
-   # Sur macOS/Linux
+   # On Windows
+   .\env\Scriptsctivate
+   # On macOS/Linux
    source env/bin/activate
    ```
 
-3. **Installer les dépendances :**
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-## Exécution du programme
-Lancez le fichier `main.py` :
+## Running the Program
+Run the `main.py` file:
 
 ```bash
 python main.py
 ```
 
-## Fonctionnement
-Le programme suit les étapes suivantes :
+## How It Works
+The program follows these steps:
 
-1. **Extraction (`extract.py`)** : Récupération des données des livres.
-2. **Transformation (`transform.py`)** : Mise en forme et nettoyage des données.
-3. **Chargement (`load.py`)** : Sauvegarde des données dans un fichier .csv et sauvegarde des images.
+1. **Extraction (`extract.py`)**: Retrieve book data.
+2. **Transformation (`transform.py`)**: Format and clean the data.
+3. **Loading (`load.py`)**: Save the data into a .csv file and store the images.
 
-## Contributeur
+## Contributor
 - Pierre-Emma
